@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Building Viewer</title>
+
+  <!-- Cesium CSS -->
+  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Widgets/widgets.css"/>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cesiumContainer"></div>
+
+  <!-- Cesium JS -->
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.114/Build/Cesium/Cesium.js"></script>
+
+  <script>
+    // ✅ Replace with your actual Cesium Ion token
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxMmMzOTBhNi0yOTRlLTQ3ZGEtYjIyYi05MGI3OTlhZmM2NGYiLCJpZCI6NDEzMTgzLCJpYXQiOjE3NzUxOTMzNTh9.Nr1LNx-csOSH4nCjNHHbJ0t5CWhI3biAllz4PW_SbDg';
+
+    // Initialize the Cesium Viewer
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+      timeline: false,
+      animation: false,
+      baseLayerPicker: true,
+      navigationHelpButton: false,
+    });
+
+    // Load your 3D Tileset
+    async function loadTileset() {
+      try {
+        const tileset = viewer.scene.primitives.add(
+          await Cesium.Cesium3DTileset.fromIonAssetId(4594667),
+        );
+
+        // Fly the camera to your model automatically
+        await viewer.zoomTo(tileset);
+
+        console.log("✅ Tileset loaded successfully!");
+
+      } catch (error) {
+        console.error("❌ Error loading tileset:", error);
+      }
+    }
+
+    loadTileset();
+  </script>
+
+</body>
+</html>
